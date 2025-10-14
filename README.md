@@ -1,4 +1,4 @@
-# 🚀 Flutter Template Project
+# 🚀 sportlive Client App
 
 A **production-ready Flutter boilerplate** that provides a smooth, scalable foundation for your next Flutter app.  
 It includes a splash screen, authentication flow, centralized theme management, offline storage with Hive, and beautiful animations — all built with **GetX**, **Hive**, and **flutter_animate**.
@@ -59,44 +59,46 @@ After completing all steps, your new project will look like a clean, original Fl
 #### 🔹 macOS / Linux
 
 ```bash
-git clone https://github.com/yourusername/flutter_template_project.git
-cd flutter_template_project
+git clone https://github.com/yourusername/sportlive.git
+cd sportlive
 ```
 
 ### 🪄 Step 2. Copy and Rename the Project
 
 Choose a new project name, for example: awesome_client_app
-
+go to template project root location in terminal/cmd
 # 🔹 macOS / Linux
 
 ```bash
-cp -r flutter_template_project awesome_client_app
+cd ..
+cp -r sportlive awesome_client_app
 cd awesome_client_app
 ```
 # 🔹 Windows (CMD)
 
 ```cmd
-xcopy flutter_template_project awesome_client_app /E /I /H
+cd ..
+xcopy sportlive awesome_client_app /E /I /H
 cd awesome_client_app
 ```
 
 ### 🪄 Step 3. Replace the Old Project Name Everywhere
 
-We’ll replace all instances of flutter_template_project and Flutter Template Project
+We’ll replace all instances of sportlive and sportlive Client App
 with your new project name (awesome_client_app, Awesome Client App, etc.)
 
 # 🔹 macOS / Linux
 
 ```bash
-find . -type f -exec sed -i '' 's/flutter_template_project/awesome_client_app/g' {} +
-find . -type f -exec sed -i '' 's/Flutter Template Project/Awesome Client App/g' {} +
+find . -type f -exec sed -i '' 's/sportlive/awesome_client_app/g' {} +
+find . -type f -exec sed -i '' 's/sportlive Client App/Awesome Client App/g' {} +
 ```
 # 🔹 Windows (PowerShell)
 ```PowerShell
 Get-ChildItem -Recurse -Include *.dart,*.yaml,*.gradle,*.xml,*.md |
 ForEach-Object {
-  (Get-Content $_.FullName) -replace 'flutter_template_project', 'awesome_client_app' `
-  -replace 'Flutter Template Project', 'Awesome Client App' | Set-Content $_.FullName
+  (Get-Content $_.FullName) -replace 'sportlive', 'awesome_client_app' `
+  -replace 'sportlive Client App', 'Awesome Client App' | Set-Content $_.FullName
 }
 ```
 

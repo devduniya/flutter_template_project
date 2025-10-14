@@ -1,24 +1,19 @@
 import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../data/local_storage.dart';
 import '../../routes/app_pages.dart';
 
 class AuthController extends GetxController {
   final email = ''.obs;
   final password = ''.obs;
 
-  late Box box;
-
-  @override
-  void onInit() {
-    super.onInit();
-    box = Hive.box('appBox');
-  }
-
+  /// Login user
   void login() {
     if (email.value.isNotEmpty && password.value.isNotEmpty) {
-      box.put('isLoggedIn', true);
-      box.put('email', email.value);
+      // Save login state and email
+      LocalStorage.write('isLoggedIn', true);
+      LocalStorage.write('email', email.value);
+
       Get.snackbar('Success', 'Login Successful');
       Get.offAllNamed(Routes.splash);
     } else {
@@ -26,11 +21,12 @@ class AuthController extends GetxController {
     }
   }
 
+  /// Signup user
   void signup() {
     if (email.value.isNotEmpty && password.value.isNotEmpty) {
-      // Simulate saving user info
-      box.put('registeredEmail', email.value);
-      box.put('registeredPassword', password.value);
+      // Save registration info
+      LocalStorage.write('registeredEmail', email.value);
+      LocalStorage.write('registeredPassword', password.value);
 
       Get.snackbar('Success', 'Account Created Successfully');
       Get.offAllNamed(Routes.login);
@@ -39,10 +35,18 @@ class AuthController extends GetxController {
     }
   }
 
+  /// Logout user
   void logout() {
-    box.put('isLoggedIn', false);
-    box.delete('email');
+    LocalStorage.write('isLoggedIn', false);
+    LocalStorage.delete('email');
+
     Get.offAllNamed(Routes.login);
     Get.snackbar('Logged Out', 'You have been logged out successfully');
   }
+
+  /// Check if user is logged in
+  bool get isLoggedIn => LocalStorage.read('isLoggedIn') ?? false;
+
+  /// Get current logged-in email
+  String get currentEmail => LocalStorage.read('email') ?? '';
 }

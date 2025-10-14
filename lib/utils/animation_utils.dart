@@ -1,89 +1,126 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-extension AnimationExtensions on Animate {
-  // Fade in + slide from bottom (more declarative)
-  Animate applyFadeSlide({
-    int milliseconds = 600,
+extension WidgetAnimations on Widget {
+  // Fade in + slide from bottom
+  Widget animateFadeSlide({
+    int durationMs = 600,
     double offsetY = 0.2,
     Curve curve = Curves.easeOutCubic,
-  }) => fadeIn(
-    duration: milliseconds.ms,
-    curve: curve,
-  ).slideY(begin: offsetY, end: 0, duration: milliseconds.ms, curve: curve);
-
-  // Fade in + scale up
-  Animate applyFadeScale({
-    int milliseconds = 600,
-    double scale = 0.8,
-    Curve curve = Curves.easeOutBack,
-  }) => fadeIn(duration: milliseconds.ms, curve: curve).scale(
-    begin: Offset(0, scale),
-    end: Offset(0, 0.8),
-    duration: milliseconds.ms,
-    curve: curve,
+  }) => Animate(
+    effects: [
+      FadeEffect(duration: durationMs.ms, curve: curve),
+      MoveEffect(
+        begin: Offset(0, offsetY),
+        end: Offset(0, 0),
+        duration: durationMs.ms,
+        curve: curve,
+      ),
+    ],
+    child: this,
   );
 
-  // Fade in + slide down from top
-  Animate applyFadeFromTop({
-    int milliseconds = 600,
+  // Fade in + scale
+  Widget animateFadeScale({
+    int durationMs = 600,
+    double beginScale = 0.8,
+    Curve curve = Curves.easeOutBack,
+  }) => Animate(
+    effects: [
+      FadeEffect(duration: durationMs.ms, curve: curve),
+      ScaleEffect(
+        begin: Offset(beginScale, beginScale),
+        end: const Offset(1, 1),
+        duration: durationMs.ms,
+        curve: curve,
+      ),
+    ],
+    child: this,
+  );
+
+  // Fade in + slide from top
+  Widget animateFadeFromTop({
+    int durationMs = 600,
     double offsetY = -0.3,
     Curve curve = Curves.easeOutCubic,
-  }) => fadeIn(
-    duration: milliseconds.ms,
-    curve: curve,
-  ).slideY(begin: offsetY, end: 0, duration: milliseconds.ms, curve: curve);
-
-  // Fade in + slide up from bottom
-  Animate applyFadeFromBottom({
-    int milliseconds = 600,
-    double offsetY = 0.3,
-    Curve curve = Curves.easeOutCubic,
-  }) => fadeIn(
-    duration: milliseconds.ms,
-    curve: curve,
-  ).slideY(begin: offsetY, end: 0.0, duration: milliseconds.ms, curve: curve);
-
-  // Fade in + slide from left
-  Animate applyFadeFromLeft({
-    int milliseconds = 600,
-    double offsetX = -0.3,
-    Curve curve = Curves.easeOutCubic,
-  }) => fadeIn(
-    duration: milliseconds.ms,
-    curve: curve,
-  ).slideX(begin: offsetX, end: 0, duration: milliseconds.ms, curve: curve);
-
-  // Fade in + slide from right
-  Animate applyFadeFromRight({
-    int milliseconds = 600,
-    double offsetX = 0.3,
-    Curve curve = Curves.easeOutCubic,
-  }) => fadeIn(
-    duration: milliseconds.ms,
-    curve: curve,
-  ).slideX(begin: offsetX, end: 0, duration: milliseconds.ms, curve: curve);
-
-  // Pop-in elastic scale effect
-  Animate applyPopIn({
-    int milliseconds = 700,
-    Curve curve = Curves.elasticOut,
-  }) => scale(
-    begin: Offset(0, 0.4),
-    end: Offset(0, 0.8),
-    duration: milliseconds.ms,
-    curve: curve,
+  }) => Animate(
+    effects: [
+      FadeEffect(duration: durationMs.ms, curve: curve),
+      MoveEffect(
+        begin: Offset(0, offsetY),
+        end: Offset(0, 0),
+        duration: durationMs.ms,
+        curve: curve,
+      ),
+    ],
+    child: this,
   );
 
-  // Shimmer loading effect
-  Animate applyShimmer({int milliseconds = 1500}) =>
-      shimmer(duration: milliseconds.ms);
+  // Fade in + slide from left
+  Widget animateFadeFromLeft({
+    int durationMs = 600,
+    double offsetX = -0.3,
+    Curve curve = Curves.easeOutCubic,
+  }) => Animate(
+    effects: [
+      FadeEffect(duration: durationMs.ms, curve: curve),
+      MoveEffect(
+        begin: Offset(offsetX, 0),
+        end: Offset(0, 0),
+        duration: durationMs.ms,
+        curve: curve,
+      ),
+    ],
+    child: this,
+  );
+
+  // Fade in + slide from right
+  Widget animateFadeFromRight({
+    int durationMs = 600,
+    double offsetX = 0.3,
+    Curve curve = Curves.easeOutCubic,
+  }) => Animate(
+    effects: [
+      FadeEffect(duration: durationMs.ms, curve: curve),
+      MoveEffect(
+        begin: Offset(offsetX, 0),
+        end: Offset(0, 0),
+        duration: durationMs.ms,
+        curve: curve,
+      ),
+    ],
+    child: this,
+  );
+
+  // Pop-in elastic scale
+  Widget animatePopIn({
+    int durationMs = 700,
+    Curve curve = Curves.elasticOut,
+  }) => Animate(
+    effects: [
+      ScaleEffect(
+        begin: const Offset(0.5, 0.5),
+        end: const Offset(1, 1),
+        duration: durationMs.ms,
+        curve: curve,
+      ),
+    ],
+    child: this,
+  );
+
+  // Shimmer effect
+  Widget animateShimmer({int durationMs = 1500}) =>
+      Animate(child: this).shimmer(duration: durationMs.ms);
 
   // Shake effect
-  Animate applyShake({int milliseconds = 500, double offsetX = 0.03}) =>
-      shake(hz: 6, offset: Offset(offsetX, 0), duration: milliseconds.ms);
+  Widget animateShake({int durationMs = 500, double offsetX = 0.03}) => Animate(
+    effects: [
+      ShakeEffect(hz: 6, offset: Offset(offsetX, 0), duration: durationMs.ms),
+    ],
+    child: this,
+  );
 
-  // Soft/smooth fade-in
-  Animate applySoftFade({int milliseconds = 900}) =>
-      fadeIn(duration: milliseconds.ms);
+  // Smooth fade-in
+  Widget animateSoftFade({int durationMs = 900}) =>
+      Animate(child: this).fadeIn(duration: durationMs.ms);
 }

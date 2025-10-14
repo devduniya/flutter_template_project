@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template_project/routes/app_pages.dart';
 import 'package:get/get.dart';
 
+import '../../routes/app_pages.dart';
+import '../../utils/animation_utils.dart';
 import 'auth_controller.dart';
 
 class SignupScreen extends StatelessWidget {
