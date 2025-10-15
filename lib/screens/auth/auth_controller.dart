@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../data/local_storage.dart';
@@ -6,6 +7,57 @@ import '../../routes/app_pages.dart';
 class AuthController extends GetxController {
   final email = ''.obs;
   final password = ''.obs;
+
+  var isPasswordHidden = true.obs;
+
+  var isOrganizer = false.obs;
+
+  var formKey = null;
+
+  bool validateForm() {
+    // Ensure form key is not null and validation runs safely
+    final formState = formKey?.currentState;
+    if (formState == null) {
+      debugPrint('❌ Form key is null');
+      return false;
+    }
+
+    // Run built-in form validators (like TextFormField validators)
+    if (!formState.validate()) {
+      debugPrint('❌ Form validation failed');
+      return false;
+    }
+
+    // Custom validation for email
+    if (email.value.trim().isEmpty) {
+      Get.snackbar('Error', 'Please enter your email');
+      return false;
+    }
+    if (!GetUtils.isEmail(email.value.trim())) {
+      Get.snackbar('Error', 'Please enter a valid email address');
+      return false;
+    }
+
+    // Custom validation for password
+    if (password.value.trim().isEmpty) {
+      Get.snackbar('Error', 'Please enter your password');
+      return false;
+    }
+    if (password.value.trim().length < 6) {
+      Get.snackbar('Error', 'Password must be at least 6 characters');
+      return false;
+    }
+
+    return true;
+  }
+
+  void setFormKey() {
+    formKey = GlobalKey<FormState>();
+  }
+
+  void togglePasswordVisibility() {
+    isPasswordHidden.value = !isPasswordHidden.value;
+  }
 
   /// Login user
   void login() {

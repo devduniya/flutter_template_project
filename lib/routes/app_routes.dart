@@ -1,7 +1,7 @@
 part of 'app_pages.dart';
 
 class Routes {
-  static const splash = '/';
+  static const splash = '/splash';
   static const login = '/login';
   static const signup = '/signup';
 }
